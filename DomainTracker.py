@@ -46,7 +46,7 @@ def assocserv(lineregex, dbcur):
     if len(existassoc) > 0:
         dbcur.execute('UPDATE AssociatedServers SET LastDetected = ? WHERE ParentDomain = ? AND Type = ? AND DomainName = ?', (currtime, ParentDomain, Type, DomainName))
     else:
-        dbcur.execute('INSERT INTO AssociatedServers (ParentDomain, Type, DomainName, FirstDetected, LastDetected) VALUES (?, ?, ?, ?, ?)', (ParentDomain, Type, DomainName, currtime, currtime))
+        dbcur.execute('INSERT INTO AssociatedServers (ParentDomain, DomainName, Type, MXPref, FirstDetected, LastDetected) VALUES (?, ?, ?, ?, ?, ?)', (ParentDomain, DomainName, Type, MXPref, currtime, currtime))
 
 def processline(line, dbcur):
     lineregex = re.search('(.*?)\s*(internet address|nameserver|MX preference = \d*, mail exchanger) = (.*)\s', line, re.DOTALL)
