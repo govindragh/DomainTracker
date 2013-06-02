@@ -4,6 +4,7 @@ import sqlite3
 import subprocess
 import re
 import datetime
+import time
 
 ################################################################################
 # HELPER FUNCTIONS
@@ -59,11 +60,16 @@ def processline(line, dbcur):
 # MAIN
 ################################################################################
 
-if len(sys.argv) != 2:
-    print 'Usage: DomainTracker.py <Database filepath>'
+if len(sys.argv) != 3:
+    print 'Usage: DomainTracker.py <Database filepath> <Time (seconds) between scans>'
     exit()
 
 dbfilepath = sys.argv[1]
+
+try:
+    waitinterval = int(sys.argv[2])
+except ValueError:
+    print 'The time between scans must be an integer.'
 
 try:
     dbfile = open(dbfilepath, 'r')
@@ -86,3 +92,4 @@ while True:
         for line in outlines:
             processline(line, dbcur)
         dbconn.commit()
+    time.sleep(waitinterval)

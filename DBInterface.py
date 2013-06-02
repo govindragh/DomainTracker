@@ -57,12 +57,16 @@ def listdata(dbconn, dbcur):
     if listtarget != '':
         dbcur.execute('SELECT IPAddress, FirstDetected, LastDetected FROM Addresses WHERE DomainName = ?', (listtarget,))
         addressrows = dbcur.fetchall()
+        print 'IP Address\tFirst Detected\tLast Detected'
+        print '----------\t--------------\t-------------'
         for addressrow in addressrows:
-            print str(addressrow)
+            print str(addressrow[0]) + '\t' + str(addressrow[1]) + '\t' + str(addressrow[2])
         dbcur.execute('SELECT Addresses.DomainName, Type, MXPref, IPAddress, AssociatedServers.FirstDetected, AssociatedServers.LastDetected, Addresses.FirstDetected, Addresses.LastDetected FROM AssociatedServers, Addresses WHERE ParentDomain = ? AND AssociatedServers.DomainName = Addresses.DomainName ORDER BY Type, Addresses.DomainName', (listtarget,))
         addressrows = dbcur.fetchall()
+        print 'Domain Name\tDomain Type\tIP Address\tAssociation First Detected\tAssociation Last Detected\tAddress First Detected\tAddress Last Detected'
+        print '-----------\t-----------\t----------\t--------------------------\t-------------------------\t----------------------\t---------------------'
         for addressrow in addressrows:
-            print str(addressrow)
+            print str(addressrow[0]) + '\t' + str(addressrow[1]) + '\t' + str(addressrow[2]) + '\t' + str(addressrow[3]) + '\t' + str(addressrow[4]) + '\t' + str(addressrow[5]) + '\t' + str(addressrow[6])
 
 def findlinks(dbconn, dbcur):
     print 'Not implemented yet.'
